@@ -1,0 +1,26 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+repositories { mavenCentral() }
+
+ext.versions = [
+    spring: '3.2.2.RELEASE',
+    spock: '0.7-groovy-1.8',
+    jetty: '7.1.6.v20100715',
+]
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:1.8.8',
+            "org.springframework:spring-webmvc:$versions.spring"
+
+    providedCompile 'javax.servlet:servlet-api:2.5'
+
+
+    testCompile "org.spockframework:spock-core:$versions.spock",
+            "org.spockframework:spock-spring:$versions.spock",
+            "org.springframework:spring-test:$versions.spring",
+            "org.eclipse.jetty:jetty-webapp:$versions.jetty",
+            "org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127",
+            'cglib:cglib-nodep:2.2.2'
+}

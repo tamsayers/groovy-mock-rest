@@ -23,14 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping('/mock/**')
 class MockRestController {
-    private final RestService restService
+    @Autowired
+    RestService restService
 
     private static def log = { println it }
-
-    @Autowired
-    MockRestController(RestService restService) {
-        this.restService = restService
-    }
 
     @ModelAttribute
     DataUrl dataUrl(HttpServletRequest request) {
@@ -39,30 +35,23 @@ class MockRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    void add(@ModelAttribute DataUrl url,
-            HttpEntity<String> httpEntity) {
+    void add(@ModelAttribute DataUrl url, HttpEntity<String> httpEntity) {
         def contentType = httpEntity.headers.'Content-Type'[0]
-        //        def body = httpEntity.body
-
-        //        if (!data[url]) {
-        //            data[url] = [:]
-        //        }
-
-        //data[url][contentType] = body
-        log(url)
-        log(contentType)
-        log(httpEntity.body)
 
         restService.addContent(new RestContent(url, contentType, httpEntity.body))
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
     ResponseEntity<String> get(@ModelAttribute DataUrl url, @RequestHeader('Accept') String accepts) {
         def content = restService.getResource(new RestResource(url, accepts))
+        if (content) {
+            def httpHeaders = new HttpHeaders()
+            httpHeaders.contentType = MediaType.valueOf(accepts)
 
-        def httpHeaders = new HttpHeaders()
-        httpHeaders.contentType = MediaType.valueOf(accepts)
-
-        new ResponseEntity<String>(content, httpHeaders, HttpStatus.OK)
+            new ResponseEntity<String>(content, httpHeaders, HttpStatus.OK)
+        } else {
+            new ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 }

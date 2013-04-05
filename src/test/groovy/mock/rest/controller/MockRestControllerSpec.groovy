@@ -23,7 +23,7 @@ class MockRestControllerSpec extends Specification {
     def queryString = 'a=b&c=d'
 
     RestService restService = Mock()
-    MockRestController controller = new MockRestController(restService)
+    MockRestController controller = new MockRestController(restService: restService)
 
     def "data should be added for the given url and content type"() {
         given:
@@ -37,7 +37,7 @@ class MockRestControllerSpec extends Specification {
         controller.add(mockDataKey, httpEntity)
 
         then:
-        1 * restService.addContent(new RestContent(path: mockDataKey, type: contentType, content: content))
+        1 * restService.addContent(new RestContent(url: mockDataKey, type: contentType, content: content))
     }
 
     def "the url should be populated from the request data"() {
@@ -54,7 +54,7 @@ class MockRestControllerSpec extends Specification {
     }
 
     def "content should be got for the given url and content type"() {
-        restService.getResource(new RestResource(url: mockDataKey, contentType: contentType)) >> content
+        restService.getResource(new RestResource(url: mockDataKey, type: contentType)) >> content
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.TEXT_XML)
 
@@ -66,5 +66,12 @@ class MockRestControllerSpec extends Specification {
     }
 
     def "a 404 should be returned on no content"() {
+        restService.getResource(new RestResource(url: mockDataKey, type: contentType)) >> null
+
+        when:
+        def result = controller.get(mockDataKey, contentType)
+
+        then:
+        result == new ResponseEntity(HttpStatus.NOT_FOUND)
     }
 }

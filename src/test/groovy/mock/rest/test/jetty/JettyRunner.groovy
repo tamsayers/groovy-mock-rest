@@ -6,24 +6,22 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection
 import org.eclipse.jetty.server.nio.SelectChannelConnector
 import org.eclipse.jetty.webapp.WebAppContext
 
-import com.google.common.base.Stopwatch
 
 class JettyRunner {
-
     private static final Boolean REITH_PROXY_ENABLED = Boolean.TRUE
 
     private static final String CONTEXT_PATH = '/rest'
     private static final String IP = '0.0.0.0'
     private static final int PORT = 8080
-    private static final Stopwatch SW = new Stopwatch().start()
 
     static void main(String[] args) throws Exception {
+        def time = new Date().time
         setProxySystemProperties()
         createServer().with {
             start()
             join()
         }
-        println("Jetty started on port $PORT in ${SW.stop().elapsedMillis()}ms")
+        println("Jetty started on port $PORT in ${new Date().time - time}ms")
     }
 
     public static Server createServer() {

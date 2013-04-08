@@ -20,6 +20,8 @@ class HashContentRepository implements ContentRepository {
         }
 
         dataStore[restContent.url]."$restContent.type" = restContent.content
+
+        dataStore.keySet().each { log it }
     }
 
     String get(RestResource resource) {

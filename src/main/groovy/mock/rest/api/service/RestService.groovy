@@ -1,11 +1,13 @@
 package mock.rest.api.service
 
-import mock.rest.api.data.RestContent
-import mock.rest.api.data.RestResource
-
+import mock.rest.api.data.Content
+import mock.rest.api.data.ContentCriteria
+import mock.rest.api.data.Resources
 
 interface RestService {
-    void addContent(RestContent content)
+    void addContent(Content content)
 
-    String getResource(RestResource resource)
+    String getContent(ContentCriteria resource)
+
+    Resources getAll()
 }

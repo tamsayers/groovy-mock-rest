@@ -4,4 +4,12 @@ package mock.rest.api.data
 class DataUrl {
     String path
     String queryString
+
+    String getFullUrl() {
+        path + queryString()
+    }
+
+    private queryString() {
+        (queryString) ? '?' + queryString : ''
+    }
 }

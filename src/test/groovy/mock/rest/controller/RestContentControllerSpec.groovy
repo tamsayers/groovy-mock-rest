@@ -2,9 +2,10 @@ package mock.rest.controller
 
 import javax.servlet.http.HttpServletRequest
 
+import mock.rest.api.data.Content
+import mock.rest.api.data.ContentCriteria
 import mock.rest.api.data.DataUrl
-import mock.rest.api.data.RestContent
-import mock.rest.api.data.RestResource
+import mock.rest.api.data.Resources
 import mock.rest.api.service.RestService
 
 import org.springframework.http.HttpEntity
@@ -15,7 +16,7 @@ import org.springframework.http.ResponseEntity
 
 import spock.lang.Specification
 
-class MockRestControllerSpec extends Specification {
+class RestContentControllerSpec extends Specification {
     def mockDataKey = new DataUrl([:])
     def content = 'data'
     def contentType = MediaType.TEXT_XML.toString()
@@ -23,7 +24,7 @@ class MockRestControllerSpec extends Specification {
     def queryString = 'a=b&c=d'
 
     RestService restService = Mock()
-    MockRestController controller = new MockRestController(restService: restService)
+    RestContentController controller = new RestContentController(restService: restService)
 
     def "data should be added for the given url and content type"() {
         given:
@@ -37,7 +38,7 @@ class MockRestControllerSpec extends Specification {
         controller.add(mockDataKey, httpEntity)
 
         then:
-        1 * restService.addContent(new RestContent(url: mockDataKey, type: contentType, content: content))
+        1 * restService.addContent(new Content(url: mockDataKey, type: contentType, content: content))
     }
 
     def "the url should be populated from the request data"() {
@@ -54,7 +55,7 @@ class MockRestControllerSpec extends Specification {
     }
 
     def "content should be got for the given url and content type"() {
-        restService.getResource(new RestResource(url: mockDataKey, type: contentType)) >> content
+        restService.getContent(new ContentCriteria(url: mockDataKey, type: contentType)) >> content
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.TEXT_XML)
 
@@ -66,12 +67,24 @@ class MockRestControllerSpec extends Specification {
     }
 
     def "a 404 should be returned on no content"() {
-        restService.getResource(new RestResource(url: mockDataKey, type: contentType)) >> null
+        restService.getContent(new ContentCriteria(url: mockDataKey, type: contentType)) >> null
 
         when:
         def result = controller.get(mockDataKey, contentType)
 
         then:
         result == new ResponseEntity(HttpStatus.NOT_FOUND)
+    }
+
+    def "a list of resources should be returned"() {
+        given:
+        Resources resources = Mock()
+        restService.getAll() >> resources
+
+        when:
+        def result = controller.list()
+
+        then:
+        result == resources
     }
 }

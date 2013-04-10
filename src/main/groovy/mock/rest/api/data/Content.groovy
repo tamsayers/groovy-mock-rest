@@ -1,7 +1,7 @@
 package mock.rest.api.data
 
 @groovy.transform.Immutable
-class RestContent {
+class Content {
     DataUrl url
     String type
     String content

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Mock Resource List</title>
+<script type="text/javascript" src="/rest/script/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="/rest/script/resources.js"></script>
 </head>
 <body>
   <h1>Mock Resources</h1>
@@ -13,10 +15,11 @@
         <th>Data Type</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody data-bind="foreach: resource">
       <tr>
-        <td></td>
-        <td></td>
+        <td><span data-bind="text: url"></span></td>
+        <td><span data-bind="text: type,
+                             click: $root.showContent"></span></td>
       </tr>
     </tbody>
   </table>

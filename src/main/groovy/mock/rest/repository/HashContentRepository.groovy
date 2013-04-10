@@ -1,7 +1,9 @@
 package mock.rest.repository
 
-import mock.rest.api.data.RestContent
-import mock.rest.api.data.RestResource
+import mock.rest.api.data.Content
+import mock.rest.api.data.ContentCriteria
+import mock.rest.api.data.Resource
+import mock.rest.api.data.Resources
 import mock.rest.api.repository.ContentRepository
 
 import org.springframework.beans.factory.annotation.Value
@@ -14,7 +16,7 @@ class HashContentRepository implements ContentRepository {
 
     def log = { text -> println text }
 
-    void add(RestContent restContent) {
+    void add(Content restContent) {
         if (!dataStore[restContent.url]) {
             dataStore[restContent.url] = [:]
         }
@@ -24,7 +26,18 @@ class HashContentRepository implements ContentRepository {
         dataStore.keySet().each { log it }
     }
 
-    String get(RestResource resource) {
+    String get(ContentCriteria resource) {
         dataStore[resource.url]?."$resource.type"
     }
+
+    Resources all() {
+        println dataStore
+        def resourceList = dataStore.collect { url, types ->
+            [getUrl: { url.fullUrl }, getTypes: { types.keySet().asList() }] as Resource
+        }
+
+        println resourceList
+        [list: { resourceList }] as Resources
+    }
 }
+

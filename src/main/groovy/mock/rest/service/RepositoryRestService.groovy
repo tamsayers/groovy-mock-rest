@@ -1,7 +1,8 @@
 package mock.rest.service
 
-import mock.rest.api.data.RestContent
-import mock.rest.api.data.RestResource
+import mock.rest.api.data.Content
+import mock.rest.api.data.ContentCriteria
+import mock.rest.api.data.Resources
 import mock.rest.api.repository.ContentRepository
 import mock.rest.api.service.RestService
 
@@ -13,11 +14,15 @@ class RepositoryRestService implements RestService {
     @Autowired
     ContentRepository repository
 
-    void addContent(RestContent content) {
+    void addContent(Content content) {
         repository.add(content)
     }
 
-    String getResource(RestResource resource) {
+    String getContent(ContentCriteria resource) {
         repository.get(resource)
+    }
+
+    Resources getAll() {
+        repository.all()
     }
 }

@@ -2,7 +2,7 @@ function Resource(data) {
 	var self = this
 	
 	self.url = data.url
-	self.type = data.type
+	self.types = data.types
 }
 
 function ResourcesViewModel() {
@@ -10,8 +10,8 @@ function ResourcesViewModel() {
 	
 	self.resources = ko.observableArray([])
 	
-	$.getJSON("/rest/mock/resources", function(allData) {
-        var mappedResources = $.map(allData, function(item) { return new Resource(item) });
+	$.getJSON("/rest/content/list", function(allData) {
+        var mappedResources = $.map(allData.resources, function(item) { return new Resource(item) });
         self.resources(mappedResources);
     });  
 }

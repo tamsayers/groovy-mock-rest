@@ -36,7 +36,7 @@ class RepositoryRestServiceSpec extends Specification {
 
     def "should retrieve the resources from the repository"() {
         given:
-        Resources resources = Mock()
+        Resources resources = new Resources([:])
         repository.all() >> resources
 
         when:

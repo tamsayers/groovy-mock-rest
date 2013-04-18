@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping('/content/**')
+@RequestMapping('/content')
 class RestContentController {
     private static def log = { println it }
 
@@ -34,7 +34,7 @@ class RestContentController {
         new DataUrl(request.requestURI, request.queryString)
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = '/**', method = RequestMethod.POST)
     @ResponseBody
     void add(@ModelAttribute DataUrl url, HttpEntity<String> httpEntity) {
         def contentType = httpEntity.headers.'Content-Type'[0]
@@ -42,7 +42,7 @@ class RestContentController {
         restService.addContent(new Content(url, contentType, httpEntity.body))
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = '/**', method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity<String> get(@ModelAttribute DataUrl url, @RequestHeader('Accept') String accepts) {
         def content = restService.getContent(new ContentCriteria(url, accepts))
@@ -56,6 +56,8 @@ class RestContentController {
         }
     }
 
+    @RequestMapping(value = '/list', method = RequestMethod.GET)
+    @ResponseBody
     Resources list() {
         restService.getAll()
     }

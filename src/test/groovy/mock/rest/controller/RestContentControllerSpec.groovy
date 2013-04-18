@@ -78,7 +78,7 @@ class RestContentControllerSpec extends Specification {
 
     def "a list of resources should be returned"() {
         given:
-        Resources resources = Mock()
+        Resources resources = new Resources([:])
         restService.getAll() >> resources
 
         when:

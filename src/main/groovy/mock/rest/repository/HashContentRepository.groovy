@@ -31,13 +31,11 @@ class HashContentRepository implements ContentRepository {
     }
 
     Resources all() {
-        println dataStore
         def resourceList = dataStore.collect { url, types ->
-            [getUrl: { url.fullUrl }, getTypes: { types.keySet().asList() }] as Resource
+            new Resource(url: url.fullUrl, types: types.keySet().asList())
         }
 
-        println resourceList
-        [list: { resourceList }] as Resources
+        new Resources(list: resourceList)
     }
 }
 

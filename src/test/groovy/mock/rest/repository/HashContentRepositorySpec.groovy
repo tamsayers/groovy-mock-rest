@@ -49,7 +49,7 @@ class HashContentRepositorySpec extends Specification {
         dataStore[new DataUrl([:])] = [type: content]
 
         when:
-        def resources = repository.all().list()
+        def resources = repository.all().list
 
         then:
         resources.size() == 2

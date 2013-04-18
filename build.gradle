@@ -12,7 +12,8 @@ ext.versions = [
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:1.8.8',
-            "org.springframework:spring-webmvc:$versions.spring"
+            "org.springframework:spring-webmvc:$versions.spring",
+            'org.codehaus.jackson:jackson-mapper-asl:1.9.12'
 
     providedCompile 'javax.servlet:servlet-api:2.5'
 
@@ -22,5 +23,7 @@ dependencies {
             "org.springframework:spring-test:$versions.spring",
             "org.eclipse.jetty:jetty-webapp:$versions.jetty",
             "org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127",
-            'cglib:cglib-nodep:2.2.2'
+            'cglib:cglib-nodep:2.2.2',
+            'com.jayway.jsonpath:json-path:0.8.1',
+            'org.hamcrest:hamcrest-all:1.3'
 }

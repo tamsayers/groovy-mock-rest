@@ -36,7 +36,7 @@ public class RestContentGetRequestTest extends RequestTest {
     RestService restService
 
     @Test
-    void dataShouldBeAddedForTheGivenUrlAndType() {
+    public void dataShouldBeAddedForTheGivenUrlAndType() {
         def content = 'content'
         def path =  '/content/my/url'
         def mediaType = MediaType.APPLICATION_XML
@@ -50,7 +50,7 @@ public class RestContentGetRequestTest extends RequestTest {
     }
 
     @Test
-    void dataShouldBeAddedForTheGivenUrlQueryStringAndType() {
+    public void dataShouldBeAddedForTheGivenUrlQueryStringAndType() {
         def content = 'content'
         def path =  '/content/my/url'
         def mediaType = MediaType.APPLICATION_XML

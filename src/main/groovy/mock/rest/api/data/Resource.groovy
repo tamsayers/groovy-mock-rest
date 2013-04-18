@@ -1,6 +1,7 @@
 package mock.rest.api.data
 
-interface Resource {
-    String getUrl()
-    List getTypes()
+@groovy.transform.Immutable
+class Resource {
+    String url
+    List<String> types
 }

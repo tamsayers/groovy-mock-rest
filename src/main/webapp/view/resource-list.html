@@ -18,7 +18,8 @@
     <tbody data-bind="foreach: resources">
       <tr>
         <td><span data-bind="text: url"></span></td>
-        <td><span data-bind="text: types"></span></td>
+        <td><span data-bind="text: types, 
+                             click: $root.showContent""></span></td>
       </tr>
     </tbody>
   </table>

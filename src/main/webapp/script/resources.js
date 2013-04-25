@@ -1,8 +1,8 @@
 function Resource(data) {
 	var self = this
 
-	self.url = data.url
-	self.types = data.types
+	self.url = decodeURIComponent(data.url)
+	self.types = ko.observableArray(data.types)
 }
 
 function ResourcesViewModel() {
@@ -17,15 +17,20 @@ function ResourcesViewModel() {
 		self.resources(mappedResources)
 	})
 
-	self.showContent = function(resource) {
-		$.ajax(resource.url, {
-			headers: {'Accept':resource.types[0]},
+	self.showContent = function(url, type) {
+		console.log('type ' +type)
+		console.log('url ' +url)
+		$.ajax(url, {
+			headers: {'Accept': type},
 			dataType: 'text',
 			success: function(data) {
-				alert(data.toString())
+				$("#content pre").text(data)
+				$("#content").dialog("open")
 			}
 		})
 	}
 }
+
+$("#content").dialog({ autoOpen: false, modal: true, width: 900, height: 700 });
 
 ko.applyBindings(new ResourcesViewModel())

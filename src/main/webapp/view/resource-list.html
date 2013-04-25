@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <title>Mock Resource List</title>
 <script type="text/javascript" src="/rest/script/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/rest/script/jquery-ui-1.10.2.custom.js"></script>
 <script type="text/javascript" src="/rest/script/knockout-2.2.1.js"></script>
+<style type="text/css">
+.content {
+	overflow: auto;
+	padding: 10px;
+}
+</style>
 </head>
 <body>
   <h1>Mock Resources</h1>
@@ -18,11 +25,18 @@
     <tbody data-bind="foreach: resources">
       <tr>
         <td><span data-bind="text: url"></span></td>
-        <td><span data-bind="text: types, 
-                             click: $root.showContent""></span></td>
+        <td>
+        
+          <ul data-bind="foreach: types"> 
+            <li data-bind="text: $data, click: $root.showContent.bind($data, $parent.url)"></li>
+          </ul>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div id="content" title="Rest Content" class="content">
+    <pre></pre>
+  </div>
   <script type="text/javascript" src="/rest/script/resources.js"></script>
 </body>
 </html>

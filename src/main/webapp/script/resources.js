@@ -1,7 +1,7 @@
 function Resource(data) {
 	var self = this
 
-	self.url = decodeURIComponent(data.url)
+	self.url = decodeURIComponent(data.url)          
 	self.types = ko.observableArray(data.types)
 }
 
@@ -31,6 +31,7 @@ function ResourcesViewModel() {
 	}
 }
 
-$("#content").dialog({ autoOpen: false, modal: true, width: 900, height: 700 });
-
 ko.applyBindings(new ResourcesViewModel())
+
+$("#content").dialog({ autoOpen: false, modal: true, width: 900, height: 700 });
+$('.dataTable').dataTable();

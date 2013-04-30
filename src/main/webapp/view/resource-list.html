@@ -11,11 +11,14 @@
 	overflow: auto;
 	padding: 10px;
 }
+ul li {
+   list-style-type: none;
+}
 </style>
 </head>
 <body>
   <h1>Mock Resources</h1>
-  <table>
+  <table class="dataTable">
     <thead>
       <tr>
         <th>Url</th>
@@ -26,7 +29,6 @@
       <tr>
         <td><span data-bind="text: url"></span></td>
         <td>
-        
           <ul data-bind="foreach: types"> 
             <li data-bind="text: $data, click: $root.showContent.bind($data, $parent.url)"></li>
           </ul>

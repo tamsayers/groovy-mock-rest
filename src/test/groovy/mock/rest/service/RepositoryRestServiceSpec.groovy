@@ -3,6 +3,7 @@ package mock.rest.service
 import mock.rest.api.data.Content
 import mock.rest.api.data.ContentCriteria
 import mock.rest.api.data.Resources
+import mock.rest.api.data.TypeContent
 import mock.rest.api.repository.ContentRepository
 import spock.lang.Specification
 
@@ -24,14 +25,41 @@ class RepositoryRestServiceSpec extends Specification {
     def "should retrieve content from the repository"() {
         given:
         def content = 'content'
-        def resource = new ContentCriteria([:])
+        def resource = new ContentCriteria(type: 'a')
         repository.get(resource) >> 'content'
 
         when:
         def result = service.getContent(resource)
 
         then:
-        result == content
+        result == new TypeContent('a', content)
+    }
+
+
+    def "should retrieve content for one of the types from the repository"() {
+        given:
+        def expectedTypeContent = new TypeContent('c', 'content')
+        def resource = new ContentCriteria(type: 'a,b,c,d,e,f')
+        repository.get(resource.forTypes()[2]) >> expectedTypeContent.content
+
+        when:
+        def result = service.getContent(resource)
+
+        then:
+        result == expectedTypeContent
+    }
+
+    def "should retrieve content for one of the types from the repository2"() {
+        given:
+        def content = 'content'
+        def resource = new ContentCriteria(type: 'a,b,c,d,e,f')
+        repository.get(resource.forTypes()[2]) >> 'content'
+
+        when:
+        service.getContent(resource)
+
+        then:
+        6 * repository.get(_)
     }
 
     def "should retrieve the resources from the repository"() {

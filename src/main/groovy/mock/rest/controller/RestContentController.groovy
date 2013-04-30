@@ -45,12 +45,12 @@ class RestContentController {
     @RequestMapping(value = '/**', method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity<String> get(@ModelAttribute DataUrl url, @RequestHeader('Accept') String accepts) {
-        def content = restService.getContent(new ContentCriteria(url, accepts))
-        if (content) {
+        def typeContent = restService.getContent(new ContentCriteria(url, accepts))
+        if (typeContent) {
             def httpHeaders = new HttpHeaders()
-            httpHeaders.contentType = MediaType.valueOf(accepts)
+            httpHeaders.contentType = MediaType.valueOf(typeContent.type)
 
-            new ResponseEntity<String>(content, httpHeaders, HttpStatus.OK)
+            new ResponseEntity<String>(typeContent.content, httpHeaders, HttpStatus.OK)
         } else {
             new ResponseEntity(HttpStatus.NOT_FOUND)
         }
